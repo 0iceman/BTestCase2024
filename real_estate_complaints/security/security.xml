@@ -1,0 +1,19 @@
+<odoo>
+    <data>
+
+            <record id="module_category_real_estate" model="ir.module.category">
+            <field name="name">Real Estate</field>
+            <field name="description">Category for Real Estate Module</field>
+            <field name="sequence">10</field>
+        </record>
+        <!-- Definición de Grupos -->
+        <record id="real_estate_complaint_group_user" model="res.groups">
+            <field name="name">User</field>
+            <field name="category_id" ref="module_category_real_estate"/>
+        </record>
+        <record id="real_estate_complaint_group_manager" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="category_id" ref="module_category_real_estate"/>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="action_report_work_order" model="ir.actions.report">
+        <field name="name">Complaint Report</field>
+        <field name="model">real.estate.complaint</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">real_estate_complaints.report_complaint_template</field>
+        <field name="binding_model_id" ref="model_real_estate_complaint"/>
+    </record>
+
+    <record id="view_complaint_form" model="ir.ui.view">
+    <field name="name">real.estate.complaint.form</field>
+    <field name="model">real.estate.complaint</field>
+    <field name="arch" type="xml">
+        <form string="Complaint">
+            <header>
+                <button name="action_mark_as_in_review" type="object" string="Mark as In Review" states="new"/>
+                <button name="action_mark_as_in_progress" type="object" string="Mark as In Progress" states="in_review"/>
+                <button name="action_mark_as_solved" type="object" string="Mark as Solved" states="in_progress"/>
+                <button name="action_mark_as_dropped" type="object" string="Drop" states="in_review,in_progress"/>
+                <button name="action_dismiss_complaint" type="object" string="Descartar Queja" states="in_review"/>
+<button name="%(real_estate_complaints.action_report_work_order)d" string="Imprimir Orden de Trabajo" type="action" attrs="{'invisible': [('state', '!=', 'in_progress')]}"/>
+            </header>
+            <sheet>
+                <group>
+                    <field name="complaint_number"/>
+                    <field name="work_order_number"/>
+                    <field name="name"/>
+                    <field name="email"/>
+                    <field name="address"/>
+                    <field name="complaint_type"/>
+                    <field name="description" widget="html"/>
+                    <field name="state"/>
+                </group>
+                <notebook>
+                    <page string="Communication">
+                        <field name="message_ids" widget="mail_thread"/>
+                    </page>
+                </notebook>
+            </sheet>
+        <div class="oe_chatter">
+            <field name="message_follower_ids" widget="mail_followers"/>
+            <field name="message_ids" widget="mail_thread"/>
+        </div>
+        </form>
+    </field>
+</record>
+
+
+        <record id="view_complaint_tree" model="ir.ui.view">
+        <field name="name">real.estate.complaint.tree</field>
+        <field name="model">real.estate.complaint</field>
+        <field name="arch" type="xml">
+            <tree >
+                        <field name="complaint_number"/>
+                        <field name="work_order_number"/>
+                        <field name="name"/>
+                        <field name="email"/>
+                        <field name="address"/>
+                        <field name="complaint_type"/>
+                        <field name="description"/>
+                        <field name="state"/>
+          </tree>
+        </field>
+    </record>
+
+<record id="view_complaint_kanban" model="ir.ui.view">
+    <field name="name">real.estate.complaint.kanban</field>
+    <field name="model">real.estate.complaint</field>
+    <field name="arch" type="xml">
+        <kanban default_group_by="state">
+            <field name="state"/>
+            <templates>
+                <t t-name="kanban-box">
+                    <div class="oe_kanban_global_click">
+                        <div class="oe_kanban_details">
+                            <strong><field name="name"/></strong>
+                            <div><field name="complaint_type"/></div>
+                            <div>Email: <field name="email"/></div>
+                            <div>Estado: <field name="state"/></div>
+                        </div>
+                    </div>
+                </t>
+            </templates>
+        </kanban>
+    </field>
+</record>
+
+
+
+   <record id="action_complaint_form" model="ir.actions.act_window">
+        <field name="name">Complaints</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">real.estate.complaint</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first complaint
+            </p>
+        </field>
+    </record>
+
+    <record id="real_estate_complaint_menu" model="ir.ui.menu">
+    <field name="name">Real Estate Complaints</field>
+    <field name="sequence">10</field>
+    <field name="action" ref="action_complaint_form"/>
+</record>
+
+</odoo>
+

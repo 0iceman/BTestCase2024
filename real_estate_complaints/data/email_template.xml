@@ -1,0 +1,22 @@
+<!-- data/mail_templates.xml -->
+<odoo>
+    <data>
+        <!-- Plantilla de correo electrónico para confirmación de queja recibida -->
+        <record id="email_template_complaint_received" model="mail.template">
+            <field name="name">Complaint Received</field>
+            <field name="model_id" ref="model_real_estate_complaint"/>
+            <field name="subject">Complaint Received: ${object.name}</field>
+            <field name="email_from">${(object.email_from or object.company_id.email)|safe}</field>
+            <field name="email_to">${object.email|safe}</field>
+            <field name="body_html">
+                <![CDATA[
+                <p>Hello ${object.name},</p>
+                <p>Your complaint has been received and is being processed.</p>
+                <p>Complaint Details: ${object.description}</p>
+                <p>Thank you for reaching out to us.</p>
+                ]]>
+            </field>
+        </record>
+
+        </data>
+</odoo>

@@ -1,0 +1,85 @@
+<odoo>
+    <template id="complaint_form_template" name="Complaint Form">
+        <t t-call="website.layout">
+            <div class="container mt32">
+                <h1>Submit Your Complaint</h1>
+                <form action="/complaint" method="post">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input type="text" name="name" class="form-control" id="name" required="required"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" name="email" class="form-control" id="email" required="required"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Address:</label>
+                        <input type="text" name="address" class="form-control" id="address" required="required"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="complaint_type">Type of Complaint:</label>
+                        <select name="complaint_type" class="form-control" id="complaint_type">
+                            <option value="question">Question</option>
+                            <option value="electrical">Electrical Issue</option>
+                            <option value="heating">Heating Issue</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description:</label>
+                        <textarea name="description" class="form-control" id="description"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </t>
+    </template>
+    
+    <template id="thank_you_template" name="Thank You">
+        <t t-call="website.layout">
+            <div class="container mt32">
+                <h1>Thank You!</h1>
+                <p>Your complaint has been submitted successfully. We will contact you shortly.</p>
+            </div>
+        </t>
+    </template>
+
+
+ <record id="email_template_complaint_confirmation" model="mail.template">
+        <field name="name">Complaint Confirmation</field>
+        <field name="model_id" ref="real_estate_complaints.model_real_estate_complaint"/>
+        <field name="subject">Your Complaint has been received</field>
+        <field name="email_from">${object.company_id.email}</field>
+        <field name="email_to">${object.email}</field>
+        <field name="body_html"><![CDATA[
+            <p>Hello ${object.name},</p>
+            <p>We have received your complaint about ${object.complaint_type}.</p>
+            <p>Your complaint number is ${object.id}. We will address it as soon as possible.</p>
+            <p>Best regards,</p>
+            <p>Your Real Estate Team</p>
+        ]]></field>
+    </record>
+<record id="email_template_complaint_received" model="mail.template">
+    <field name="name">Complaint Received</field>
+    <field name="model_id" ref="model_real_estate_complaint"/>
+    <field name="subject">Your complaint has been received</field>
+    <field name="body_html">
+        <![CDATA[
+        <p>Hello,</p>
+        <p>We have received your complaint and it is now being processed.</p>
+        <p>Complaint number: ${object.id}</p>
+        <p>Thank you,</p>
+        <p>Your Real Estate Team</p>
+        ]]>
+    </field>
+</record>
+<record id="report_work_order_template" model="ir.actions.report">
+    <field name="name">Work Order</field>
+    <field name="model">real.estate.complaint</field>
+    <field name="report_type">qweb-pdf</field>
+    <field name="report_name">real_estate_complaints.report_work_order_template</field>
+    <field name="report_file">real_estate_complaints/report_work_order_template</field>
+</record>
+</odoo>
+

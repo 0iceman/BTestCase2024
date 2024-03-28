@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_real_estate_complaint_user,real.estate.complaint.user,model_real_estate_complaint,real_estate_complaint_group_user,1,0,0,0
+access_real_estate_complaint_manager,real.estate.complaint.manager,model_real_estate_complaint,real_estate_complaint_group_manager,1,1,1,1
+
